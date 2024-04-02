@@ -1,0 +1,51 @@
+version: "3"
+networks:
+  micro-net:
+    driver: bridge
+volumes:
+  api-gateway-node-modules:
+  booking-service-node-modules:
+  flights-service-node-modules:
+  flight-notification-node-modules:
+services:
+  api-gateway:
+    build: ./Flight-Auth-Service
+    networks:
+      - micro-net
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./Flight-Auth-Service:/developer/nodejs/api-gateway
+      - api-gateway-node-modules:/developer/nodejs/api-gateway/node_modules
+    
+  flights-service:
+    build: ./flights_new
+    networks:
+      - micro-net
+    ports: 
+      - "3000:3000"
+    volumes:
+      - ./flights_new:/developer/nodejs/flights_service
+      - flights-service-node-modules:/developer/nodejs/flights-service/node_modules
+    
+  booking-service:
+    build: ./flight-booking-service
+    networks:
+      - micro-net
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./flight-booking-service:/developer/nodejs/booking_service
+      - booking-service-node-modules:/developer/nodejs/booking-service/node_modules
+
+  reminder-service:
+    build: ./Flight_Notification
+    networks:
+      - micro-net
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./Flight_Notification:/developer/nodejs/reminder_service
+      - flight-notification-node-modules:/developer/nodejs/reminder_service/node_modules
+
+    
